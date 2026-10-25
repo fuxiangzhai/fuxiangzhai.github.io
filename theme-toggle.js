@@ -83,6 +83,21 @@
     });
   }
 
+  function setupSpotlight() {
+    if (!window.matchMedia || !window.matchMedia("(hover: hover)").matches) return;
+    document.querySelectorAll(".paper-card, .interest-card").forEach(function (card) {
+      card.addEventListener("pointermove", function (event) {
+        var rect = card.getBoundingClientRect();
+        card.style.setProperty("--mx", event.clientX - rect.left + "px");
+        card.style.setProperty("--my", event.clientY - rect.top + "px");
+      });
+      card.addEventListener("pointerleave", function () {
+        card.style.removeProperty("--mx");
+        card.style.removeProperty("--my");
+      });
+    });
+  }
+
   // Apply the theme immediately (this script loads in <head>) to avoid a light flash in dark mode.
   root.setAttribute("data-theme", getPreferredTheme());
   if ("IntersectionObserver" in window) root.classList.add("js");
@@ -91,6 +106,7 @@
     setTheme(getPreferredTheme(), false);
     setupScrollNav();
     setupReveal();
+    setupSpotlight();
 
     document.addEventListener("click", function (event) {
       var trigger = event.target.closest("[data-theme-toggle]");
