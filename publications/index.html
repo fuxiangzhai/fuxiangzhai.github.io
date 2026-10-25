@@ -34,19 +34,37 @@
         <section class="section-block">
           <h2>2026</h2>
 
-          <article class="paper-card featured-paper">
-            <div class="paper-meta-row"><span class="badge badge-accent">First Author</span><span class="badge">Under Review</span></div>
-            <h3>Latent Action Control for Reasoning-Guided Unified Image Generation</h3>
-            <p class="authors"><strong>Fuxiang Zhai</strong>, Sixiang Chen, Yingjin Li, Shuaibo Li, Jianyu Lai, Tengjun Huang, Lei Zhu</p>
-            <p class="paper-summary">A reasoning-guided unified generation framework that turns planning, internal drafting, diagnosis, and refinement into hidden continuous actions consumed by the generator.</p>
-            <div class="paper-links"><a href="https://arxiv.org/abs/2605.16961" target="_blank" rel="noopener noreferrer">Paper</a></div>
+          <article class="paper-card featured-paper has-figure figure-side">
+            <figure class="paper-figure">
+              <button class="figure-zoom" type="button" data-lightbox aria-label="Enlarge figure: Overview of Latent Action Control">
+                <img src="/assets/papers/lac-overview.webp" width="1800" height="1264" alt="Overview of Latent Action Control" loading="lazy" decoding="async" />
+                <span class="zoom-hint" aria-hidden="true">Click to enlarge</span>
+              </button>
+              <figcaption><strong>Overview.</strong> Variational latent action alignment (top) and Latent-Flow GRPO with coupled latent-to-image rollouts (bottom).</figcaption>
+            </figure>
+            <div class="paper-body">
+              <div class="paper-meta-row"><span class="badge badge-accent">First Author</span><span class="badge">Under Review</span></div>
+              <h3>Latent Action Control for Reasoning-Guided Unified Image Generation</h3>
+              <p class="authors"><strong>Fuxiang Zhai</strong>, Sixiang Chen, Yingjin Li, Shuaibo Li, Jianyu Lai, Tengjun Huang, Lei Zhu</p>
+              <p class="paper-summary">A reasoning-guided unified generation framework that turns planning, internal drafting, diagnosis, and refinement into hidden continuous actions consumed by the generator.</p>
+              <div class="paper-tags"><span>Unified Multimodal Models</span><span>Latent Reasoning</span><span>Flow GRPO</span></div>
+              <div class="paper-links"><a href="https://arxiv.org/abs/2605.16961" target="_blank" rel="noopener noreferrer">Paper</a></div>
+            </div>
           </article>
 
-          <article class="paper-card">
+          <article class="paper-card has-figure">
+            <figure class="paper-figure">
+              <button class="figure-zoom" type="button" data-lightbox aria-label="Enlarge figure: Overview of GenEvolve">
+                <img src="/assets/papers/genevolve-overview.webp" width="1800" height="855" alt="Overview of GenEvolve" loading="lazy" decoding="async" />
+                <span class="zoom-hint" aria-hidden="true">Click to enlarge</span>
+              </button>
+              <figcaption><strong>Pipeline.</strong> On-policy tool-orchestrated visual trajectories (top) feed a self-evolving loop that distills visual experience into the agent (bottom).</figcaption>
+            </figure>
             <div class="paper-meta-row"><span class="badge badge-venue">NeurIPS 2026 · CCF A</span></div>
             <h3>GenEvolve: Self-Evolving Image Generation Agents via Tool-Orchestrated Visual Experience Distillation</h3>
             <p class="authors">Sixiang Chen, Zhaohu Xing, Tian Ye, Xinyu Geng, Yunlong Lin, Jianyu Lai, Xuanhua He, <strong>Fuxiang Zhai</strong>, Jialin Gao, Lei Zhu</p>
             <p class="paper-summary">A self-evolving image-generation agent that distills structured experience from tool-orchestrated generation trajectories.</p>
+            <div class="paper-tags"><span>Agentic Generation</span><span>Tool Use</span><span>Self-Distillation</span></div>
             <div class="paper-links"><a href="https://arxiv.org/abs/2605.21605" target="_blank" rel="noopener noreferrer">Paper</a></div>
           </article>
 
@@ -55,14 +73,23 @@
             <h3>ROAD: Rule-Grounded Context-Aware Open-World Driver Anomaly Detection</h3>
             <p class="authors">Co-author: <strong>Fuxiang Zhai</strong></p>
             <p class="paper-summary">Rule-grounded and context-aware modeling for open-world driver anomaly detection.</p>
+            <div class="paper-tags"><span>Anomaly Detection</span><span>Open-World</span><span>Driving Scenes</span></div>
             <div class="paper-links"><a href="https://openreview.net/forum?id=9p9YEuoqnX" target="_blank" rel="noopener noreferrer">OpenReview</a></div>
           </article>
 
-          <article class="paper-card">
+          <article class="paper-card has-figure">
+            <figure class="paper-figure">
+              <button class="figure-zoom" type="button" data-lightbox aria-label="Enlarge figure: PosterReward training pipeline and model structures">
+                <img src="/assets/papers/posterreward-pipeline.webp" width="1800" height="589" alt="PosterReward training pipeline and model structures" loading="lazy" decoding="async" />
+                <span class="zoom-hint" aria-hidden="true">Click to enlarge</span>
+              </button>
+              <figcaption><strong>Pipeline.</strong> Three reward-model variants (top) trained with a four-stage cascade: joint SFT, rejection sampling, score-module training, and RL (bottom).</figcaption>
+            </figure>
             <div class="paper-meta-row"><span class="badge badge-venue">CVPR 2026 · CCF A</span></div>
             <h3>PosterReward: Unlocking Accurate Evaluation for High-Quality Graphic Design Generation</h3>
             <p class="authors">Jianyu Lai*, Sixiang Chen*, Jialin Gao*, Hengyu Shi, Zhongying Liu, <strong>Fuxiang Zhai</strong>, Junfeng Luo, Xiaoming Wei, Lujia Wang, Lei Zhu</p>
             <p class="paper-summary">A reward modeling framework for typography-, layout-, and aesthetics-aware evaluation of graphic design generation.</p>
+            <div class="paper-tags"><span>Reward Modeling</span><span>Graphic Design</span><span>Benchmark</span></div>
             <div class="paper-links">
               <a href="https://openaccess.thecvf.com/content/CVPR2026/html/Lai_PosterReward_Unlocking_Accurate_Evaluation_for_High-Quality_Graphic_Design_Generation_CVPR_2026_paper.html" target="_blank" rel="noopener noreferrer">Paper</a>
               <a href="https://alexlai2860.github.io/PosterReward/" target="_blank" rel="noopener noreferrer">Project</a>

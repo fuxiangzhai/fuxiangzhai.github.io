@@ -98,6 +98,35 @@
     });
   }
 
+  function setupLightbox() {
+    var triggers = document.querySelectorAll("[data-lightbox]");
+    if (!triggers.length) return;
+
+    var dialog = document.createElement("dialog");
+    dialog.className = "lightbox";
+    dialog.innerHTML = '<button class="lightbox-close" type="button" aria-label="Close">&times;</button><div class="lightbox-stage"><img alt="" /></div>';
+    document.body.appendChild(dialog);
+    var image = dialog.querySelector("img");
+
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener("click", function () {
+        var source = trigger.querySelector("img");
+        if (typeof dialog.showModal !== "function") {
+          window.open(source.currentSrc || source.src, "_blank", "noopener");
+          return;
+        }
+        image.src = source.currentSrc || source.src;
+        image.alt = source.alt;
+        dialog.showModal();
+      });
+    });
+
+    // Any click inside the overlay (image, backdrop or close button) dismisses it.
+    dialog.addEventListener("click", function () {
+      dialog.close();
+    });
+  }
+
   // Apply the theme immediately (this script loads in <head>) to avoid a light flash in dark mode.
   root.setAttribute("data-theme", getPreferredTheme());
   if ("IntersectionObserver" in window) root.classList.add("js");
@@ -107,6 +136,7 @@
     setupScrollNav();
     setupReveal();
     setupSpotlight();
+    setupLightbox();
 
     document.addEventListener("click", function (event) {
       var trigger = event.target.closest("[data-theme-toggle]");
