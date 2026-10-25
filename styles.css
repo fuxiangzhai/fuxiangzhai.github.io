@@ -254,24 +254,6 @@ strong { color: var(--text); font-weight: 650; }
   vertical-align: .32em;
   color: var(--accent);
 }
-.hero .hero-title {
-  margin: 0 0 30px;
-  max-width: 640px;
-  color: var(--text);
-  font-size: clamp(1.9rem, 3.3vw, 2.65rem);
-  font-weight: 750;
-  line-height: 1.14;
-  letter-spacing: -.035em;
-}
-.gradient-text {
-  background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 45%, var(--accent) 90%);
-  background-size: 220% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shimmer 7s ease-in-out infinite alternate;
-}
-@keyframes shimmer { to { background-position: 100% 0; } }
 .section-block p { color: var(--muted); margin: 0 0 12px; }
 .hero p { font-size: 1.01rem; line-height: 1.8; }
 .lead { font-size: 1.04rem; line-height: 1.75; }
@@ -453,7 +435,7 @@ strong { color: var(--text); font-weight: 650; }
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .paper-card, .interest-card, .link-item { transition: none; }
   .paper-card:hover, .interest-card:hover, .link-item:hover { transform: none; }
-  body::before, .avatar-wrap::before, .gradient-text, .timeline-item:first-child::before { animation: none; }
+  body::before, .avatar-wrap::before, .timeline-item:first-child::before { animation: none; }
 }
 
 @media (max-width: 900px) {
@@ -472,7 +454,6 @@ strong { color: var(--text); font-weight: 650; }
   .grid { gap: 32px; }
   .profile-card { display: block; }
   .avatar-wrap { width: 128px; height: 128px; margin: 0 0 20px; }
-  .hero .hero-title { margin-bottom: 24px; }
   .name { font-size: 1.65rem; }
   .interest-grid { grid-template-columns: 1fr; }
   .timeline::before { left: 69px; }
