@@ -13,9 +13,9 @@
     <meta property="og:image" content="https://fuxiangzhai.github.io/zfx.jpg" />
     <link rel="canonical" href="https://fuxiangzhai.github.io/" />
     <link rel="icon" href="/favicon.png" />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/styles.css?v=visitor-map" />
     <script src="/theme-toggle.js"></script>
-    <script defer src="/visitor-stats.js"></script>
+    <script type="module" src="/visitor-stats.js?v=visitor-map"></script>
   </head>
   <body>
     <nav class="site-nav" aria-label="Primary navigation">
@@ -160,13 +160,38 @@
     <footer class="footer">
       <section class="visitor-stats" aria-labelledby="visitor-stats-title" data-counter-id="1741484">
         <h2 id="visitor-stats-title">Visitor map</h2>
-        <a class="visitor-stats-map" href="https://www.supercounters.com/stats/1741484" aria-label="Visitor map and detailed statistics">
-          <span>Map unavailable</span>
+        <a class="visitor-map-preview" href="https://www.supercounters.com/map/1741484" aria-label="Open visitor map">
+          <span class="visitor-map-fallback">Open map</span>
+          <canvas aria-hidden="true" hidden></canvas>
+          <svg class="visitor-map-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5M8 10.5h5m-2.5-2.5v5"/></svg>
         </a>
         <div class="visitor-stats-count" role="status">
           <span>Visit count unavailable</span>
         </div>
-        <p>Approximate locations · <a href="https://www.supercounters.com/privacy">Privacy</a></p>
+        <dialog class="visitor-map-dialog" aria-labelledby="visitor-map-dialog-title">
+          <header class="visitor-map-heading">
+            <h2 id="visitor-map-dialog-title">Visitor map</h2>
+            <form method="dialog">
+              <button type="submit" class="visitor-map-button" aria-label="Close map" autofocus>×</button>
+            </form>
+          </header>
+          <div class="visitor-map-viewport">
+            <canvas tabindex="0" role="img" aria-label="World map of visitor locations and major cities" aria-describedby="visitor-map-help"></canvas>
+            <div class="visitor-map-controls" role="group" aria-label="Map controls">
+              <button type="button" class="visitor-map-button" data-map-zoom="in" aria-label="Zoom in">+</button>
+              <button type="button" class="visitor-map-button" data-map-zoom="out" aria-label="Zoom out">−</button>
+              <button type="button" class="visitor-map-button visitor-map-reset" data-map-zoom="reset">Reset</button>
+            </div>
+          </div>
+          <p id="visitor-map-help" class="visitor-map-instructions">Drag to explore. Use + and − to zoom.</p>
+          <div class="visitor-map-notes">
+            <div class="visitor-map-legend">
+              <span>Major city</span>
+              <span data-visitor-legend>Approximate visit location</span>
+            </div>
+            <div><a href="https://www.naturalearthdata.com/">Natural Earth</a> · <a href="https://www.supercounters.com/stats/1741484">Supercounters</a> · <a href="https://www.supercounters.com/privacy">Privacy</a></div>
+          </div>
+        </dialog>
       </section>
       Last updated: November 2026
     </footer>
