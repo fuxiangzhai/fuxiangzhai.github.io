@@ -533,6 +533,37 @@ strong { color: var(--text); font-weight: 650; }
   text-align: center;
 }
 
+.visitor-stats {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin: 0 auto 20px;
+  color: var(--muted);
+}
+.visitor-stats h2 {
+  margin: 0 0 4px;
+  color: var(--text);
+  font-size: 1rem;
+}
+.visitor-stats-map {
+  display: grid;
+  place-items: center;
+  width: min(252px, 100%);
+  height: 126px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--muted);
+}
+.visitor-stats-map > div { pointer-events: none; }
+.visitor-stats-map > div:not(#scvmap),
+.visitor-stats-map:has(#scvmap) > span,
+.visitor-stats-count > div,
+.visitor-stats-count:has(a) > span { display: none; }
+.visitor-stats-count { min-height: 1.5em; font-size: .875rem; font-variant-numeric: tabular-nums; }
+.visitor-stats-count a { font-weight: 600; }
+.visitor-stats p { margin: 0; }
+
 /* Scroll reveal (enabled by theme-toggle.js; content stays visible without JS). */
 .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .7, .2, 1); }
 .js .reveal.in { opacity: 1; transform: none; }
