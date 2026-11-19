@@ -1,3 +1,5 @@
+import { identifyVisitorPlaces } from "./visitor-places.js";
+
 const previewCities = new Set(["New York", "São Paulo", "London", "Cairo", "Tokyo", "Sydney"]);
 const maxZoom = 12;
 const worldView = { lon: 0, lat: 12, zoom: 1 };
@@ -21,35 +23,48 @@ function scaleFor(width, height, zoom, mini) {
   return Math.max(0.03, Math.min((width - inset) / 360, (height - inset) / 150)) * zoom;
 }
 
-function drawCities(ctx, cities, project, width, height, zoom, mini, color, halo) {
+function makeLabelDrawer(ctx, width, height, mini) {
   const placed = [];
-  const fontSize = mini ? 8 : 12;
-  const rankLimit = zoom < 1.6 ? 0 : zoom < 3 ? 2 : 8;
-  ctx.font = `600 ${fontSize}px system-ui, sans-serif`;
-  ctx.textBaseline = "middle";
+  return (name, x, y, emphasis, color, halo) => {
+    if (x < 4 || x > width - 4 || y < 4 || y > height - 4) return false;
+    const fontSize = mini ? 8 : emphasis ? 13 : 12;
+    const gap = mini ? 4 : 7;
+    ctx.font = `${emphasis ? 700 : 600} ${fontSize}px system-ui, sans-serif`;
+    ctx.textBaseline = "middle";
+    const labelWidth = ctx.measureText(name).width;
 
+    for (const [labelX, labelY] of [
+      [x + gap, y - gap], [x - gap - labelWidth, y - gap],
+      [x + gap, y + gap], [x - gap - labelWidth, y + gap],
+    ]) {
+      const box = { left: labelX - 3, top: labelY - fontSize / 2 - 2, right: labelX + labelWidth + 3, bottom: labelY + fontSize / 2 + 2 };
+      if (box.left < 1 || box.right > width - 1 || box.top < 1 || box.bottom > height - 1) continue;
+      if (box.right > width - (mini ? 31 : 148) && box.bottom > height - (mini ? 31 : 52)) continue;
+      if (placed.some(other => box.left < other.right && box.right > other.left && box.top < other.bottom && box.bottom > other.top)) continue;
+      placed.push(box);
+
+      ctx.strokeStyle = halo;
+      ctx.lineWidth = mini ? 2 : 3.5;
+      ctx.lineJoin = "round";
+      ctx.strokeText(name, labelX, labelY);
+      ctx.fillStyle = color;
+      ctx.fillText(name, labelX, labelY);
+      return true;
+    }
+    return false;
+  };
+}
+
+function drawCities(ctx, cities, project, drawLabel, visitedNames, zoom, mini, color, halo) {
+  const rankLimit = zoom < 1.6 ? 0 : zoom < 3 ? 2 : 8;
   for (const [name, lon, lat, rank] of cities) {
     if (mini ? !previewCities.has(name) : rank > rankLimit) continue;
+    if (visitedNames.has(name)) continue;
     const [x, y] = project(lon, lat);
-    const labelWidth = ctx.measureText(name).width;
-    const gap = mini ? 3 : 6;
-    const labelX = x + gap + labelWidth < width - 5 ? x + gap : x - gap - labelWidth;
-    const labelY = y - gap;
-    const box = { left: labelX - 3, top: labelY - fontSize / 2 - 2, right: labelX + labelWidth + 3, bottom: labelY + fontSize / 2 + 2 };
-    if (x < 4 || x > width - 4 || box.left < 1 || box.top < 1 || box.bottom > height - 1) continue;
-    if (mini && box.right > width - 31 && box.bottom > height - 31) continue;
-    if (placed.some(other => box.left < other.right && box.right > other.left && box.top < other.bottom && box.bottom > other.top)) continue;
-    placed.push(box);
-
-    ctx.fillStyle = color;
+    if (!drawLabel(name, x, y, false, color, halo)) continue;
     ctx.beginPath();
     ctx.arc(x, y, mini ? 1.25 : 2.2, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = halo;
-    ctx.lineWidth = mini ? 2 : 3.5;
-    ctx.lineJoin = "round";
-    ctx.strokeText(name, labelX, labelY);
-    ctx.fillText(name, labelX, labelY);
   }
 }
 
@@ -92,18 +107,25 @@ function drawMap(canvas, data, view, locations, mini) {
   ctx.stroke(data.borders);
   ctx.restore();
 
-  drawCities(ctx, data.cities, project, width, height, view.zoom, mini, color("city"), color("label-halo"));
+  const drawLabel = makeLabelDrawer(ctx, width, height, mini);
+  const visitedNames = new Set();
+  for (const { name, lon, lat } of locations) {
+    if (!name) continue;
+    const [x, y] = project(lon, lat);
+    if (drawLabel(name, x, y, true, color("visit-label"), color("label-halo"))) visitedNames.add(name);
+  }
+  drawCities(ctx, data.cities, project, drawLabel, visitedNames, view.zoom, mini, color("city"), color("label-halo"));
 
-  for (const [lon, lat] of locations) {
+  for (const { lon, lat } of locations) {
     const [x, y] = project(lon, lat);
     if (x < -8 || x > width + 8 || y < -8 || y > height + 8) continue;
     ctx.fillStyle = color("visit-halo");
     ctx.beginPath();
-    ctx.arc(x, y, mini ? 4.4 : 6.5, 0, Math.PI * 2);
+    ctx.arc(x, y, mini ? 3.8 : 5.4, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = color("visit");
     ctx.beginPath();
-    ctx.arc(x, y, mini ? 2.6 : 3.8, 0, Math.PI * 2);
+    ctx.arc(x, y, mini ? 2.8 : 4, 0, Math.PI * 2);
     ctx.fill();
   }
 }
@@ -187,6 +209,24 @@ function addMapControls(canvas, dialog, view, redraw) {
   for (const event of ["pointerup", "pointercancel", "lostpointercapture"]) {
     canvas.addEventListener(event, ({ pointerId }) => pointers.delete(pointerId));
   }
+  return ({ lon, lat }) => update(lon, lat, Math.max(view.zoom, 4));
+}
+
+function showVisitorPlaces(dialog, places, focusPlace) {
+  const section = dialog.querySelector(".visitor-map-places");
+  const list = section.querySelector("ul");
+  for (const place of places) {
+    if (!place.name) continue;
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "visitor-map-place";
+    button.textContent = place.region ? `${place.name} (region)` : place.name;
+    button.addEventListener("click", () => focusPlace(place));
+    item.append(button);
+    list.append(item);
+  }
+  section.hidden = list.childElementCount === 0;
 }
 
 export async function setupVisitorMap(stats, visitorLocations) {
@@ -214,15 +254,19 @@ export async function setupVisitorMap(stats, visitorLocations) {
     });
   }
 
+  const focusPlace = addMapControls(canvas, dialog, view, redraw);
   legend.dataset.empty = "";
   legend.textContent = "Visit locations loading…";
-  visitorLocations.then(places => {
-    locations = places || [];
-    if (locations.length) {
+  visitorLocations.then(async points => {
+    if (points?.length) {
+      locations = points.map(([lon, lat]) => ({ lon, lat }));
       delete legend.dataset.empty;
-      legend.textContent = "Approximate visit location";
+      legend.textContent = "Visitor location (IP estimate)";
+      redraw();
+      locations = await identifyVisitorPlaces(points);
+      showVisitorPlaces(dialog, locations, focusPlace);
     } else {
-      legend.textContent = places ? "No recent visit locations" : "Visit locations unavailable";
+      legend.textContent = points ? "No recent visit locations" : "Visit locations unavailable";
     }
     redraw();
   });
@@ -237,7 +281,6 @@ export async function setupVisitorMap(stats, visitorLocations) {
     redraw();
   });
 
-  addMapControls(canvas, dialog, view, redraw);
   const resizeObserver = new ResizeObserver(redraw);
   resizeObserver.observe(mini);
   resizeObserver.observe(canvas);

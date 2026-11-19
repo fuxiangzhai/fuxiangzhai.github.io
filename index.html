@@ -13,9 +13,9 @@
     <meta property="og:image" content="https://fuxiangzhai.github.io/zfx.jpg" />
     <link rel="canonical" href="https://fuxiangzhai.github.io/" />
     <link rel="icon" href="/favicon.png" />
-    <link rel="stylesheet" href="/styles.css?v=visitor-map" />
+    <link rel="stylesheet" href="/styles.css?v=visitor-cities" />
     <script src="/theme-toggle.js"></script>
-    <script type="module" src="/visitor-stats.js?v=visitor-map"></script>
+    <script type="module" src="/visitor-stats.js?v=visitor-cities"></script>
   </head>
   <body>
     <nav class="site-nav" aria-label="Primary navigation">
@@ -184,10 +184,14 @@
             </div>
           </div>
           <p id="visitor-map-help" class="visitor-map-instructions">Drag to explore. Use + and − to zoom.</p>
+          <section class="visitor-map-places" aria-labelledby="visitor-map-places-title" hidden>
+            <h3 id="visitor-map-places-title">Visitor locations</h3>
+            <ul></ul>
+          </section>
           <div class="visitor-map-notes">
             <div class="visitor-map-legend">
               <span>Major city</span>
-              <span data-visitor-legend>Approximate visit location</span>
+              <span data-visitor-legend>Visitor location (IP estimate)</span>
             </div>
             <div><a href="https://www.naturalearthdata.com/">Natural Earth</a> · <a href="https://www.supercounters.com/stats/1741484">Supercounters</a> · <a href="https://www.supercounters.com/privacy">Privacy</a></div>
           </div>

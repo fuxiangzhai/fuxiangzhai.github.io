@@ -1,4 +1,4 @@
-import { setupVisitorMap } from "./visitor-map.js";
+import { setupVisitorMap } from "./visitor-map.js?v=visitor-cities";
 
 const stats = document.querySelector(".visitor-stats");
 const live = location.origin === "https://fuxiangzhai.github.io";
